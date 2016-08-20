@@ -1,0 +1,5 @@
+cron:
+- description: update site data every 1 min
+  url: /script/cronFetchDevices.php
+  schedule: every 1 mins
+  timezone: Asia/Taipei

@@ -1,0 +1,95 @@
+#iw-container {
+	z-index:200;
+	visibility: hidden;
+	position: absolute;
+	width:300px;
+	border-radius: 10px 10px 10px 10px;
+	box-shadow: 0 0 5px #3990B9;
+
+	background: -moz-linear-gradient(top, rgba(72,182,233,0) 0%, rgba(72,182,233,0.3) 24%, rgba(72,182,233,0.7) 50%, rgba(72,182,233,0.7) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(72,182,233,0.3)), color-stop(24%, rgba(72,182,233,0)), color-stop(50%, rgba(72,182,233,0.7)), color-stop(100%, rgba(72,182,233,0.7)));
+	background: -webkit-linear-gradient(top, rgba(72,182,233,0) 0%, rgba(72,182,233,0.3) 24%, rgba(72,182,233,0.7) 50%, rgba(72,182,233,0.7) 100%);
+	background: -o-linear-gradient(top, rgba(72,182,233,0) 0%, rgba(72,182,233,0.3) 24%, rgba(72,182,233,0.7) 50%, rgba(72,182,233,0.7) 100%);
+	background: -ms-linear-gradient(top, rgba(72,182,233,0) 0%, rgba(72,182,233,0.3) 24%, rgba(72,182,233,0.7) 50%, rgba(72,182,233,0.7) 100%);
+	background: linear-gradient(to bottom, rgba(72,182,233,0) 0%, rgba(72,182,233,0.3) 24%, rgba(72,182,233,0.7) 50%, rgba(72,182,233,0.7) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#48b6e9', endColorstr='#48b6e9', GradientType=0 );
+}
+
+	#iw-container .arrow {
+		position:absolute;
+		left:50%;
+		bottom:-18px;
+		margin-left:-13px;
+
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 20px 15px 0;
+		border-color: #48b6e9 transparent transparent transparent;
+	}
+	#iw-container .iw-title {
+		font-size: 1.1em;
+		font-weight: bolder;
+		padding: 5px 10px;
+		background-color: #48b5e9;
+		color: white;
+		margin: 0;
+		border-radius: 0px 0px 10px 10px;
+		position: relative;
+	}
+
+	#iw-container .iw-content {
+		overflow: hidden;
+		padding:10px;
+		padding-bottom:0px;
+		height:190px;
+		color: #fff;
+	}
+		
+		#iw-container .main-garge{ 
+			width: 180px; 
+			float:left; 
+			height:180px; 
+			margin-top: 10px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		#iw-container .sub-garge{ 
+			width: 90px; 
+			float:right; 
+			height:100%;
+		}
+		#iw-container .sub-garge > div{ 
+			height: 90px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		#iw-container .sub-garge-top{ 
+			margin-bottom: 5px; 
+		}
+
+		#iw-container .msg{
+			text-align: center;
+			font-size: 1.3em;
+			font-weight: bolder;
+		}
+
+		#iw-container .iw-name{
+			
+		}
+		#iw-container .iw-link{
+			position: absolute;
+			top: 0; right: 0;
+			padding: 5px;
+		}
+		#iw-container .iw-link a{
+			cursor: pointer;
+			margin: 0 3px;
+		}
+		#iw-container .iw-link .glyphicon{
+			font-size: 1.6em;
+			margin-left: 2px;
+		}

@@ -1,0 +1,121 @@
+/*
+* Noto Sans TC (Chinese_traditional) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 100;
+  src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Thin.woff2) format('woff2'),
+       url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Thin.woff) format('woff'),
+       url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Thin.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 300;
+  src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.woff2) format('woff2'),
+       url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.woff) format('woff'),
+       url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.otf) format('opentype');
+}
+@font-face {
+   font-family: 'Noto Sans TC';
+   font-style: normal;
+   font-weight: 400;
+   src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff2) format('woff2'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff) format('woff'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans TC';
+   font-style: normal;
+   font-weight: 500;
+   src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.woff2) format('woff2'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.woff) format('woff'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans TC';
+   font-style: normal;
+   font-weight: 700;
+   src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Bold.woff2) format('woff2'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Bold.woff) format('woff'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Bold.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans TC';
+   font-style: normal;
+   font-weight: 900;
+   src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Black.woff2) format('woff2'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Black.woff) format('woff'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Black.otf) format('opentype');
+ }
+
+
+html, body{ 
+	width:100%; 
+	height:100%; 
+	margin:0; 
+	overflow: hidden;
+	background: #232F3A;
+	font-family: 'Noto Sans TC', sans-serif;
+}
+
+#map-container{
+	width:100%;
+	height: 100%;
+}
+
+#siteLogo{
+	position:absolute;
+	top:0.5em; left:0.5em;
+	z-index:91;
+	width:170px;
+}
+	#siteLogo img{
+		filter: drop-shadow(0px 0px 3px #fff) drop-shadow(0px 0px 5px #fff);
+		-webkit-filter: drop-shadow(0px 0px 3px #fff) drop-shadow(0px 0px 5px #fff);		
+	}
+
+#recruit .popover{
+	opacity: 0.9;
+	display: inline-block;
+	position: absolute;
+	left: 180px;
+	top: 0.5em;
+	z-index: 80;
+	cursor: pointer;
+}
+#recruit .popover-content{
+	padding: 3px 8px;
+}
+
+#geoLocate{
+	margin: 0 0 -5px 10px;
+}
+	#geoLocate > button{
+		background-color: #fff;
+	    border: medium none;
+	    border-radius: 2px;
+	    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	    cursor: pointer;
+	    height: 28px;
+	    margin-right: 10px;
+	    outline: medium none;
+	    padding: 0;
+	    width: 28px;
+	}
+		#geoLocate .icon-gps{
+			background-image: url("https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png");
+		    background-position: 0 0;
+		    background-repeat: no-repeat;
+		    background-size: 180px 18px;
+		    height: 18px;
+		    margin: 5px;
+		    width: 18px;
+		}
+			#geoLocate .icon-gps.gps-located{
+				background-position: -144px 0;
+			}
+			#geoLocate .icon-gps.gps-unlocate{
+				background-position: -18px 0;
+			}

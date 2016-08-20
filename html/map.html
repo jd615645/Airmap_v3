@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<meta property="og:title" content="台灣空汙觀測地圖">
+		<meta property="og:description" content="Taiwan Air Pollution Map">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://airmap.g0v.asper.tw/">
+		<meta property="og:image" content="https://airmap.g0v.asper.tw/image/screenshotv3.png">
+
+		<title data-lang="pageTitle">台灣空汙觀測地圖</title>
+		<link rel='shortcut icon' type='image/x-icon' href='image/favicon.png' />
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+		
+		<link rel="stylesheet" href="css/map.css">
+	</head>
+	<body>
+		<div id="siteLogo">
+			<a href="http://beta.hackfoldr.org/g0vairmap/g0v--riRTvbB0E5x">
+				<img src="image/g0v.png" class="img-responsive" alt="Image">
+			</a>			
+		</div>
+		<div id="recruit">
+			<a href='/recruit' class="popover right">
+				<div class="arrow"></div>
+				<div class="popover-content" data-lang="recruit">自造站點持續募集中</div>
+			</a>
+		</div>
+	
+		<div id="map-container"></div>
+	
+		<div id="navigator">
+			<button type="button" class="navbar-toggle navigator-toggle" v-on:click="toggleContainer">
+				<span v-show="open" class="glyphicon glyphicon-triangle-left"></span>
+				<span v-show="!open" class="glyphicon glyphicon-triangle-right"></span>
+			</button>
+			<div class="header">
+				<div style="text-align: right">
+					<input type="checkbox" class="bs-switch" id="languageSwitch" checked="checked" data-size="mini" data-on-text="中文" data-off-text="En" data-on-Color="default" data-off-Color="default">
+				</div>
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item" data-name="siteLayer" >
+					<h4 class="list-group-item-heading" v-on:click="changeActiveItem">
+						<span data-lang="siteFilter">測量站點</span>
+						<input type="checkbox" class="bs-switch layerToggle siteLayer">
+					</h4>
+					<div class="list-group-item-text" v-show="showItemText('siteLayer')" transition="slide">
+						<div class="blockquote">
+							<span class="title" data-lang="group">群組</span>
+							<div class="site-category-allswitch">
+								<button type="button" class="btn btn-xs btn-success" v-on:click="site_selectAllCategory">Select All</button>
+								<button type="button" class="btn btn-xs btn-defalut" v-on:click="site_deselectAllCategory">Deselect All</button>
+							</div>
+						</div>
+						<div class="blockquote-content category">
+							<button type="button" class="btn btn-sm btn-site" 
+								data-category="{{cate.name}}"
+								v-for="cate in site.category"
+								v-bind:class="{'btn-default': !cate.active, 'btn-success': cate.active}" 
+								v-on:click="site_changeCategory"
+							>{{ cate.name }} <span class="badge">{{ cate.cnt }}</span></button>
+						</div>
+
+						<div class="blockquote">
+							<span class="title" data-lang="measureType">量測類別</span>
+						</div>
+						<div class="blockquote-content">
+							<button type="button" class="btn btn-sm btn-site" 
+								v-for="measure in site.measure"
+								v-bind:class="{'btn-default': !measure.active, 'btn-primary': measure.active}" 
+								v-on:click="site_changeMeasure"
+							>{{ measure.name }}</button>
+						</div>
+
+						<div class="blockquote">
+							<span class="title" data-lang="voronoiDiagram">勢力地圖</span>
+						</div>
+						<div class="blockquote-content">
+							<div class="blockquote">
+								<span class="title" data-lang="display">顯示</span>
+								<input type="checkbox" class="bs-switch siteVoronoi">
+							</div>
+							
+							<div class="blockquote">
+								<span class="title">
+									<span data-lang="opacity">透明度</span> <code>{{ site.voronoiLayerOpacity }}</code>
+								</span>
+								<input type="text" data-provide="slider" data-slider-min="1" data-slider-max="10" data-slider-step="1" lang="zh-tw" v-model="site.voronoiLayerOpacity">
+							</div>
+						</div>
+
+						<div class="blockquote">
+							<span class="title">
+								<span class="glyphicon glyphicon-list-alt"></span>
+								<a href='/list' target="_blank" data-lang="siteList">站點清單</a>
+							</span>
+						</div>
+					</div>
+				</li>
+
+				<li class="list-group-item" data-name="windLayer">
+					<h4 class="list-group-item-heading" v-on:click="changeActiveItem">
+						<span data-lang="windLayer">風力線</span>
+						<input type="checkbox" class="bs-switch layerToggle windLayer">
+					</h4>
+					<div class="list-group-item-text" v-show="showItemText('windLayer')" transition="slide">
+						<div class="loading" v-show="wind.loading">
+							<div class="spinner">
+								<div class="rect1"></div>
+								<div class="rect2"></div>
+								<div class="rect3"></div>
+								<div class="rect4"></div>
+								<div class="rect5"></div>
+							</div>
+						</div>
+
+						<div class="blockquote-content">
+							<div class="help-block">
+								<div>
+									<span class="glyphicon glyphicon-alert"></span>
+									<span data-lang="windResourceAlert">風力線十分消耗資源，容易造成瀏覽器當機，請斟酌使用。</span>
+								</div>
+								<div v-show="wind.dateUpdateTime">
+									<span class="glyphicon glyphicon-time"></span>
+									<span data-lang="lastUpdate">資料時間</span>: {{ wind.dateUpdateTime }}
+									UTC+8 (5, 11, 17, 23 <span data-lang="halfHourUpdate">半整點更新資料</span>)
+								</div>
+							</div>							
+						</div>
+
+						<div class="blockquote">
+							<span class="title">
+								<span data-lang="windFillOpacity">線條亮度</span> <code>{{ wind.lineOpacity }}</code>
+							</span>
+							<input type="text" class="wind-lineOpacity" data-provide="slider" data-slider-min="1" data-slider-max="9" data-slider-step="1" data-slider-value="{{ wind.lineOpacity }}" lang="zh-tw" v-model="wind.lineOpacity">
+						</div>
+
+						<div class="blockquote">
+							<span class="title">
+								<span data-lang="windMoveSpeed">移動速度</span> <code>{{ wind_movingSpeedText }}</code>
+							</span>
+							<input type="text" class="wind-movingSpeed" data-provide="slider" data-slider-min="1" data-slider-max="10" data-slider-step="1" data-slider-value="{{ wind.movingSpeed }}" data-slider-reversed=true lang="zh-tw" v-model="wind.movingSpeed">
+						</div>						
+					</div>
+				</li>
+
+				<li class="list-group-item" data-name="resourceLayer">
+					<h4 class="list-group-item-heading" v-on:click="changeActiveItem">
+						<span data-lang="resourceLayer">資源圖層</span>
+					</h4>
+					<div class="list-group-item-text" v-show="showItemText('resourceLayer')" transition="slide">
+						<div class="blockquote">
+							<span class="title" data-lang="emissionLayer">固定汙染源</span>
+						</div>
+						<div class="blockquote-content">
+							<div class="blockquote">
+								<span class="title" data-lang="displayEmissionStaton">顯示站點</span>
+								<input type="checkbox" class="bs-switch emissionSites" data-size="small">
+							</div>
+
+							<div class="blockquote">
+								<span class="title" data-lang="voronoiDiagram">勢力地圖</span>
+								<input type="checkbox" class="bs-switch emissionVoronoiLayer" data-size="small">
+							</div>
+							
+							<div class="blockquote">
+								<span class="title">
+									<span data-lang="opacity">透明度</span> <code>{{ emission_opacity }}</code>
+								</span>
+								<input type="text" data-provide="slider" data-slider-min="1" data-slider-max="10" data-slider-step="1" lang="zh-tw" data-slider-value="{{ emission_opacity }}" v-model="emission_opacity">
+							</div>
+						</div>
+
+						<div class="blockquote">
+							<span class="title" data-lang="cwbImage">氣象雲圖</span>
+						</div>
+						<div class="blockquote-content">
+
+							<div class="blockquote">
+								<span class="glyphicon glyphicon-alert"></span>
+								<span data-lang="imageProjectionNotEqual">雲圖與地圖投影法不相同，位置會有誤差。</span>
+							</div>
+
+							<div class="blockquote">
+								<span class="title" data-lang="display">顯示</span>
+								<input type="checkbox" class="bs-switch satelliteLayer" data-size="small">
+							</div>
+							
+							<div class="blockquote">
+								<span class="title">
+									<span data-lang="opacity">透明度</span> <code>{{ satellite_opacity }}</code>
+								</span>
+								<input type="text" data-provide="slider" data-slider-min="1" data-slider-max="9" data-slider-step="1" lang="zh-tw" data-slider-value="{{ satellite_opacity }}" v-model="satellite_opacity">
+							</div>
+						</div>
+					</div>
+				</li>
+
+				<li class="list-group-item" data-name="siteChart">
+					<h4 class="list-group-item-heading" v-on:click="changeActiveItem">
+						<span data-lang="siteChart">測站圖表</span>
+					</h4>
+					<div class="list-group-item-text" v-show="showItemText('siteChart')" transition="slide">
+						<div class="loading" v-show="site.chartLoading">
+							<div class="spinner">
+								<div class="rect1"></div>
+								<div class="rect2"></div>
+								<div class="rect3"></div>
+								<div class="rect4"></div>
+								<div class="rect5"></div>
+							</div>
+						</div>
+
+						<div v-show="!site.instance">
+							<h5 data-lang="selectSiteFirst" style='text-align: center;'></h5>
+						</div>
+
+						<div v-show="site.instance">
+							<h5>{{site.chartTitle}}</h5>
+
+							<div class="blockquote">
+								<a href='{{ site.detailPageHref }}' target='_blank' class="btn btn-xs" lang="zh-tw" title="站點詳細資訊">
+									<span class="glyphicon glyphicon-list-alt"></span>
+									<span class="visible-md-inline visible-lg-inline">Site Detail</span>
+								</a>
+
+								<a href='{{ site.siteDatasource }}' target='_blank' class="btn btn-xs" title="Site Datasource">
+									<span class="glyphicon glyphicon-hdd"></span>
+									<span class="visible-md-inline visible-lg-inline">Site Datasource</span>
+								</a>
+
+								<span class="btn btn-xs" v-show="site.lastUpdate">
+									<span class="glyphicon glyphicon-time"></span>
+									<span class="visible-md-inline visible-lg-inline" data-lang="lastUpdate">更新時間</span>
+									<span class="time visible-md-inline visible-lg-inline">{{ site.lastUpdate }}</span>
+								</span>
+							</div>
+							
+							<div v-show="!site.chartLoadingError">
+								<canvas id="site-history-chart" width="350" height="200"></canvas>
+							</div>
+
+							<div class="site-history-error" v-show="site.chartLoadingError">{{site.chartLoadingError}}</div>
+
+							<div class="blockquote">
+								<a href="{{site.chartDatasource}}" class="btn btn-success btn-xs" title="Chart Datasource">
+									<span class="glyphicon glyphicon-hdd"></span>
+									<span class="visible-md-inline visible-lg-inline">Chart Datasource</span>
+								</a>
+
+								<span class="btn btn-xs" data-lang="lastHourChart" title="過去一小時歷史數值" v-on:click="changeChartInterval('Hourly')" v-bind:class="{'btn-primary': site_chartIntervalActive('Hourly'), 'btn-default': !site_chartIntervalActive('Hourly') }">
+									<span class="visible-xs-inline visible-sm-inline">H</span>
+									<span class="visible-md-inline visible-lg-inline">Hourly</span>
+								</span>
+
+								<span class="btn btn-xs" data-lang="lastDayChart" title="過去一天歷史數值" v-on:click="changeChartInterval('Daily')" v-bind:class="{'btn-primary': site_chartIntervalActive('Daily'), 'btn-default': !site_chartIntervalActive('Daily') }">
+									<span class="visible-xs-inline visible-sm-inline">D</span>
+									<span class="visible-md-inline visible-lg-inline">Daily</span>
+								</span>
+
+								<span class="btn btn-xs" data-lang="lastWeekChart" title="過去一週歷史數值" v-on:click="changeChartInterval('Weekly')" v-bind:class="{'btn-primary': site_chartIntervalActive('Weekly'), 'btn-default': !site_chartIntervalActive('Weekly') }">
+									<span class="visible-xs-inline visible-sm-inline">W</span>
+									<span class="visible-md-inline visible-lg-inline">Weekly</span>
+								</span>
+
+								<span class="btn btn-xs" data-lang="lastMonthChart" title="過去一個月歷史數值" v-on:click="changeChartInterval('Monthly')" v-bind:class="{'btn-primary': site_chartIntervalActive('Monthly'), 'btn-default': !site_chartIntervalActive('Monthly') }">
+									<span class="visible-xs-inline visible-sm-inline">M</span>
+									<span class="visible-md-inline visible-lg-inline">Monthly</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</li>
+
+				<li class="footer">
+					<p data-lang="disclaimer">
+						本零時空汙觀測網僅彙整公開資料提供視覺化參考，並不對資料數據提供保證，實際測值以各資料來源為準。
+					</p>
+					<p style="text-align: center;">
+						<a href="http://lass-net.org/" target="_blank">
+							<img src="/image/recruit-LASS.jpg" height="50px">
+						</a>
+
+						<a href="https://github.com/Lafudoci/ProbeCube" target="_blank">
+							<img src="/image/recruit-PClogo.png" height="50px">
+						</a>
+
+						<a href="https://airbox.edimaxcloud.com"  target="_blank" title="Edimax Airbox">
+							<img src="https://airbox.edimaxcloud.com/images/logo_airbox.png" height="50px">
+						</a>
+					</p>
+					<p style='text-align: center;'>Asper &copy; 2016 &nbsp;&nbsp;<a href="/about">About this Website.</a></p>
+
+				</li>
+			</ul>
+		</div>
+
+		<div id="indicatorLevel"></div>
+
+		<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBfhb3bOt_jBPFN2WDzkhX8k518Yc7CLBw"></script>
+		<script src="js/vendor-common.js"></script>
+		<script src="js/vendor-map.js"></script>
+		<script src="js/map.js"></script>
+
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-55384149-4', 'auto');
+			ga('send', 'pageview');
+		</script>		
+	</body>
+</html>

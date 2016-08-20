@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<meta property="og:title" content="台灣空汙觀測站點詳細資料">
+		<meta property="og:description" content="Taiwan Air Pollution Measure Site Detail Page">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://airmap.g0v.asper.tw/site">
+		<meta property="og:image" content="https://airmap.g0v.asper.tw/image/g0v.png">
+
+		<title>台灣空汙觀測站點詳細資料</title>
+		<link rel='shortcut icon' type='image/x-icon' href='image/favicon.png' />
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			html, body{ padding: 10px 10px; }			
+			#gauge{	text-align: center;}
+				#gauge > div { display: inline-block; width:170px; height: 170px; margin: 5px; }
+			#site-title{ text-align: center; font-size:1.5em; font-weight: bolder; }
+			#history-chart{ position: relative; }
+			.history-loading-error{ display: none; color: red; font-size:1.3em; text-align: center; }
+			#chart-control{ text-align: center;}
+			#chart-control .btn.active{ background-color: #eee; color: #696969; }
+
+			#detail .table th { text-align: right; }
+		</style>
+	</head>
+	<body>
+		<div style='width:80%; max-width:400px; margin:0 auto'>
+			<img src="image/g0v.png" class="img-responsive" alt="Image">
+		</div>
+
+		<div id="content" class="container" style="display:none;">
+			<div id="gauge" class="row">
+				<div id="gauge-temp"></div>
+				<div id="gauge-pm25"></div>
+				<div id="gauge-humi"></div>
+			</div>
+
+			<div id="site-title" class="row">
+				<div class="well">
+					<span id="siteGroup"></span>
+					<span id="siteName"></span>
+				</div>
+			</div>			
+			
+			<div class="history-loading-error"></div>
+			<div id="history-chart" class="row">
+				<div class="loading" style='display: none;'>
+					<div class="spinner">
+						<div class="rect1"></div>
+						<div class="rect2"></div>
+						<div class="rect3"></div>
+						<div class="rect4"></div>
+						<div class="rect5"></div>
+					</div>
+				</div>
+
+				<canvas id="site-history-chart" width="720" height="300"></canvas>
+				
+				<div id="chart-control">
+					<span class="btn btn-default active" data-range="Hourly" lang="zh-tw" title="過去一小時歷史數值">
+						<span class="visible-xs-inline visible-sm-inline">H</span>
+						<span class="visible-md-inline visible-lg-inline">Hourly</span>
+					</span>
+
+					<span class="btn btn-default" data-range="Daily" lang="zh-tw" title="過去一天歷史數值">
+						<span class="visible-xs-inline visible-sm-inline">D</span>
+						<span class="visible-md-inline visible-lg-inline">Daily</span>
+					</span>
+
+					<span class="btn btn-default" data-range="Weekly" lang="zh-tw" title="過去一週歷史數值">
+						<span class="visible-xs-inline visible-sm-inline">W</span>
+						<span class="visible-md-inline visible-lg-inline">Weekly</span>
+					</span>
+
+					<span class="btn btn-default" data-range="Monthly" lang="zh-tw" title="過去一個月歷史數值">
+						<span class="visible-xs-inline visible-sm-inline">M</span>
+						<span class="visible-md-inline visible-lg-inline">Monthly</span>
+					</span>
+				</div>
+			</div>
+
+			<div id="detail" class="row"></div>
+		</div>
+
+		<div id="no-content" class="container" style='text-align: center; padding-top:40%;'>
+			<h1><a href='/'>Oops! What are you looking for?</a></h1>
+		</div>
+
+		<script src="js/vendor-common.js"></script>
+		<script src="js/vendor-map.js"></script>
+		<script src="js/site.js"></script>
+
+ 		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-55384149-4', 'auto');
+			ga('send', 'pageview');
+		</script>	
+	</body>
+</html>
+	
