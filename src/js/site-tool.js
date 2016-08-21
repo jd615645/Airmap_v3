@@ -1,5 +1,4 @@
 var Site = require("js/site-model");
-var Navigator = require("js/navigator-handler");
 
 var siteTool = (function(){
 	var showLayer = true;
@@ -77,7 +76,8 @@ var siteTool = (function(){
 			var validSiteCount = 0;
 
 			var titles = getSitesTitle();
-			
+			var markers = [];
+
 			for(var i in data){
 				var title = encodeURIComponent(data[i]['SiteGroup']+data[i]['SiteName']);
 				if( typeof titles[title] != "undefined" ){
@@ -97,17 +97,21 @@ var siteTool = (function(){
 					if( usingAnimation ){						
 						(function(x, Site, showLayer){
 							setTimeout(function(){ 
-								Site.createMarker({onMap: showLayer});
+								Site.createMarker({onMap: false});
 							}, x * delayms);
 						})(validSiteCount, site, showLayer);
 						validSiteCount++;
 					}else{
-						site.createMarker({onMap: showLayer});
+						site.createMarker({onMap: false});
 					}
 
 					add(site);
+					markers.push(site.getMarker());
 				}
 			}
+
+			var MarkerClusterer = require("js/vendor/markerclusterer");
+        	var markerCluster = new MarkerClusterer(MapHandler.getInstance(), markers);
 
 			// delete
 			for(var i in titles){

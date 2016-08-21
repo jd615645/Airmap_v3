@@ -148,6 +148,7 @@ Site.prototype.getIconImage = function(){
 	return {
 		url: url,
 		scaledSize: MapHandler.createSize(30, 30),
+		value: text,
 	}
 }
 
@@ -164,6 +165,7 @@ Site.prototype.createMarker = function(options){
 		'position': position,
 		'map': options.onMap ? MapHandler.getInstance() : null,
 	};
+	delete options.onMap;
 
 	//get icon
 	// var icon = this.getIconSVG();

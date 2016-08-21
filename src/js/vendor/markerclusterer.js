@@ -355,7 +355,13 @@ MarkerClusterer.prototype.getMaxZoom = function() {
  *  @private
  */
 MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
+  var total = 0;
+  markers.map(function(marker){
+  	total += +(marker.getIcon().value);
+  })
+
   var index = 0;
+  var value = Math.round( (total / markers.length) * 10 ) / 10;
   var count = markers.length;
   var dv = count;
   while (dv !== 0) {
@@ -365,8 +371,9 @@ MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
 
   index = Math.min(index, numStyles);
   return {
-    text: count,
-    index: index
+    text: value,
+    index: index,
+    count: count,
   };
 };
 
@@ -1204,6 +1211,16 @@ ClusterIcon.prototype.useStyle = function() {
   this.textSize_ = style['textSize'];
   this.backgroundPosition_ = style['backgroundPosition'];
   this.iconAnchor_ = style['iconAnchor'];
+
+	var Indicator = require("js/measure-indicator");
+	var color = Indicator.getLevelColor(this.sums_.text);
+	var url = [
+		"/image/markerIcon?",
+		"color=" + color.replace('#', ''),
+		"number=" + this.sums_.text,
+		"size=" + (+this.width_-1)
+	].join('&');
+	this.url_ = url;
 };
 
 
@@ -1225,9 +1242,7 @@ ClusterIcon.prototype.setCenter = function(center) {
  */
 ClusterIcon.prototype.createCss = function(pos) {
   var style = [];
-  // style.push('background-image:url(' + this.url_ + ');');
-  style.push('background: red;');
-  style.push('border-radius: 50%;');
+  style.push('background-image:url(' + this.url_ + ');');
   var backgroundPosition = this.backgroundPosition_ ? this.backgroundPosition_ : '0 0';
   style.push('background-position:' + backgroundPosition + ';');
 
@@ -1257,13 +1272,15 @@ ClusterIcon.prototype.createCss = function(pos) {
   }
 
   var txtColor = this.textColor_ ? this.textColor_ : 'black';
-  var txtSize = this.textSize_ ? this.textSize_ : 11;
+  var txtSize = this.textSize_ ? this.textSize_ : 14;
 
   style.push('cursor:pointer; top:' + pos.y + 'px; left:' +
       pos.x + 'px; color:' + txtColor + '; position:absolute; font-size:' +
       txtSize + 'px; font-family:Arial,sans-serif; font-weight:bold');
   return style.join('');
 };
+
+module.exports = MarkerClusterer;
 
 
 // Export Symbols for Closure
