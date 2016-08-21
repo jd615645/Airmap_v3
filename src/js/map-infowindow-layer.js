@@ -60,15 +60,13 @@ InfoWindowLayer.prototype.onAdd = function() {
 
 	//click outside to close navigator
 	$body.click(function(e){
-		if( !$(e.target).parents(MapHandler.getContainer()).length ){
-			return false;
-		}
-
-		var time = new Date().getTime();
-		var isChildren = $.contains('#iw-container', e.target);
-		if( !isChildren && (time - self.displayTime) > 1000 ){	//open 1 secs can remove, fix for event racing
-			self.remove();
-			$body.trigger('infoWindowClose', [self.Site]);
+		if( $(e.target).parents(MapHandler.getContainer()).length ){
+			var time = new Date().getTime();
+			var isChildren = $.contains('#iw-container', e.target);
+			if( !isChildren && (time - self.displayTime) > 1000 ){	//open 1 secs can remove, fix for event racing
+				self.remove();
+				$body.trigger('infoWindowClose', [self.Site]);
+			}
 		}
 	});
 
