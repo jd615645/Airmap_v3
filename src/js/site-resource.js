@@ -5,12 +5,14 @@ function getSiteResource(site){
 	var ajaxRequest = function(url, param){
 		if(jqXHR){ jqXHR.abort(); }
 		
+		if(!param){ param = {}; }
+		var options = $.extend({
+			dataType: "json",
+			url: url,
+		}, param);
+
 		return new Promise(function(resolve, reject){
-			jqXHR = $.ajax({
-				  dataType: "json",
-				  url: url,
-				  data: param,
-			});
+			jqXHR = $.ajax(options);
 
 			jqXHR.then(function(data){
 		    	resolve(data);
@@ -30,14 +32,18 @@ function getSiteResource(site){
 			var url = "http://nrl.iis.sinica.edu.tw/LASS/last.php?device_id=:id";
 			url = url.replace(':id', deviceID);
 
-			return ajaxRequest(url, {}, function(data){
-				if(cb) cb(data['feeds'] || {});
+			return ajaxRequest(url).then(function(data){
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: url,
+						feeds: data['feeds']
+					});
+				});	
 			});
-
 		};
 		var getRangeData = function(range, cb){
-			var url = "http://nrl.iis.sinica.edu.tw/LASS/history.php";
-			// var url = "/json/sinicaHistory.json";
+			// var url = "http://nrl.iis.sinica.edu.tw/LASS/history.php";
+			var url = "/json/sinicaHistory.json";
 			var param = {
 				device_id: deviceID,
 				start: moment().utc().add(-1, range).format().replace('+00:00', 'Z'),
@@ -45,7 +51,7 @@ function getSiteResource(site){
 				results: 8000,
 			}
 
-			return ajaxRequest(url, param).then(function(data){
+			return ajaxRequest(url, {data: param}).then(function(data){
 				return new Promise(function(resolve, reject){
 					resolve({
 						url: url + '?' + $.param(param),
@@ -93,18 +99,29 @@ function getSiteResource(site){
 		}
 	}
 
-	var airbox = function(){
-		var deviceID = site.getProperty('RawData')['device_id'];
+	var airbox_asus = function(){
+		var deviceID = site.getProperty('RawData')['id'] || site.getProperty('RawData')['device_id'];
 		var momentFormat = 'x';
 
 		var getIdentity = function(){
-			return site.getProperty('RawData')['device_id'];
+			return deviceID;
 		};
 		var getLastestData = function(cb){
-			var allDeviceLastMessageUrl = "https://airbox.asuscloud.com/airbox/messages/";
+			var url = "https://airbox.asuscloud.com/airbox/device/" + deviceID;
 
 			return ajaxRequest(allDeviceLastMessageUrl, {}, function(data){
 				if(cb) cb(data[deviceID] || {});
+			});
+
+			return ajaxRequest(url, {
+				headers: { "Prefix": "781463DA" }
+			}).then(function(data){
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: url,
+						feed: data
+					});
+				});			
 			});
 		};
 		var getRangeData = function(range, cb){
@@ -143,7 +160,7 @@ function getSiteResource(site){
 					}
 				}
 
-				var label = moment(feed['time']).format('MM-DD HH:mm');			
+				var label = moment(feed['time'] + ' +0800').format('MM-DD HH:mm');			
 				xAxis.push(label);
 			});
 
@@ -183,9 +200,14 @@ function getSiteResource(site){
 				timezone: 'Asia/Taipei',
 			}
 
-			return ajaxRequest(apiUrl, param, function(data){
+			return ajaxRequest(url, {data: param}).then(function(data){
 				parsefieldMapping(data.channel);
-				if(cb) cb(data['feeds'] || {});
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: url,
+						feeds: data['feeds']
+					});
+				});			
 			});
 		};
 		var getRangeData = function(range, cb){
@@ -243,8 +265,8 @@ function getSiteResource(site){
 	};
 
 	var epa = function(){
-		var deviceID = site.getProperty('Channel_id');
 		var apiUrl = "http://taqm.g0v.asper.tw/site-:id-lastest.json".replace(':id', deviceID);
+		var deviceID = site.getProperty('Channel_id');
 		var momentFormat = "YYYY-MM-DD HH:mm:ss";
 		var fieldMapping = {};
 
@@ -252,23 +274,58 @@ function getSiteResource(site){
 			return deviceID;
 		};
 		var getLastestData = function(cb){
-
-			return ajaxRequest(apiUrl, {}, function(data){
-				if(cb) cb(data['data'] || {});
+			return ajaxRequest(apiUrl).then(function(data){
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: apiUrl,
+						feed: data['data']
+					});
+				});			
 			});
 		};
 		var getRangeData = function(range){
-			return new Promise(function(resolve, reject){
-				resolve({
-					url: '',
-					feeds: []
-				});
+			var url = "http://taqm.g0v.asper.tw/site-:id.json".replace(':id', deviceID);
+
+			return ajaxRequest(url).then(function(data){				
+				var feeds = [];
+				for(var i in data['data']){
+					var feed = data['data'][i];
+					if( ["PM2.5", "AMB_TEMP", "RH"].indexOf(feed['type']) < 0 ){ continue; }
+
+					feeds.push(feed);
+				}
+
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: url,
+						feeds: feeds
+					});
+				});			
 			});
 		};
 		var chartDataTransform = function(feeds){
+			var xAxis = [];
+			var measures = {};
+			var indexMapping = {
+				'PM2.5': 'PM2.5',
+				'AMB_TEMP': 'Temperature',
+				'RH': 'Humidity',
+			};
+
+			for(var i in feeds[0]['values']){
+				var date = feeds[0]['year'] + '-' + feeds[0]['month'] + '-' + feeds[0]['day'] + ' ' + i + ':00 +0800';
+				var label = moment(date).format('MM-DD HH:mm');
+				xAxis.push(label);
+			}
+
+			feeds.map(function(feed){
+				var type = indexMapping[feed['type']];
+				measures[type] = feed['values'];
+			});
+
 			return {
-				xAxis: [],
-				measures: {},
+				xAxis: xAxis,
+				measures: measures,
 			}
 		}		
 
@@ -305,7 +362,7 @@ function getSiteResource(site){
 
 	switch(siteGroup){
 		case 'lass': 	resource = lass(); 		break;
-		//case 'airbox': 	resource = airbox(); 	break;
+		case 'airbox_asus': 	resource = airbox_asus(); 	break;
 		case 'epa': 	resource = epa(); 	break;
 		
 		case 'probecube':
@@ -316,8 +373,6 @@ function getSiteResource(site){
 		case 'ks-001':	
 			resource = thingspeak();	break;
 		default:
-			siteGroup
-
 			resource = empty();
 	}
 
