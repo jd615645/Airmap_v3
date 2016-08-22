@@ -119,3 +119,7 @@ html, body{
 			#geoLocate .icon-gps.gps-unlocate{
 				background-position: -18px 0;
 			}
+#footer { padding: 5px; }
+#footer > p { text-align: center; }
+#footer .datasource a {margin: 0 3px;}
+#footer .datasource img {max-height: 40px;}
