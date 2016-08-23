@@ -111,10 +111,6 @@ function getSiteResource(site){
 		var getLastestData = function(cb){
 			var url = "https://airbox.asuscloud.com/airbox/device/" + deviceID;
 
-			return ajaxRequest(allDeviceLastMessageUrl, {}, function(data){
-				if(cb) cb(data[deviceID] || {});
-			});
-
 			return ajaxRequest(url, {
 				headers: { "Prefix": "781463DA" }
 			}).then(function(data){
@@ -173,6 +169,87 @@ function getSiteResource(site){
 		};
 		return {
 			jsonLink: "http://airbox.asuscloud.com/airbox/device/" + deviceID,
+			getIdentity: getIdentity,
+			getLastestData: getLastestData,
+			getRangeData: getRangeData,
+			chartDataTransform: chartDataTransform,
+		}
+	};
+
+	var airbox_edimax = function(){
+		var deviceID = site.getProperty('RawData')['id'] || site.getProperty('RawData')['device_id'];
+		var momentFormat = 'YYYY-MM-DD HH:mm:ss';
+
+		var getIdentity = function(){
+			return deviceID;
+		};
+		var getLastestData = function(cb){
+			//haven't api
+			return new Promise.resolve({
+				url: "",
+				feed: {}
+			});
+
+			var url = "" + deviceID;
+
+			return ajaxRequest(url).then(function(data){
+				return new Promise(function(resolve, reject){
+					resolve({
+						url: url,
+						feed: data
+					});
+				});			
+			});
+		};
+		var getRangeData = function(range, cb){
+			var url = "/json/edimaxAirboxHistory.json";
+			var param = {
+				id: deviceID,
+				start: moment().add(-1, range).format(momentFormat),
+				end: moment().format(momentFormat),
+			};
+
+			return ajaxRequest(url, {data: param}).then(function(data){
+				return new Promise(function(resolve, reject){
+					param.token = 'YOUR TOKEN HERE';
+					resolve({
+						url: url + '?' + $.param(param),
+						feeds: data['entries']
+					});
+				});			
+			});
+		};
+		var chartDataTransform = function(feeds){
+			var xAxis = [];
+			var measures = {};
+			var indexMapping = {
+				's_d0': 'PM2.5',
+				's_t0': 'Temperature',
+				's_h0': 'Humidity',
+			};
+
+			feeds.map(function(feed){
+				for(var index in feed){
+					if( indexMapping[index] ){
+						var type = indexMapping[index];
+						var value = feed[index];
+
+						if( !measures[type] ){ measures[type] = []; }
+						measures[type].push(value);
+					}
+				}
+
+				var label = moment(feed['time'] + ' +0800').format('MM-DD HH:mm');			
+				xAxis.push(label);
+			});
+
+			return {
+				xAxis: xAxis,
+				measures: measures,
+			}
+		};
+		return {
+			jsonLink: "https://airbox.edimaxcloud.com",
 			getIdentity: getIdentity,
 			getLastestData: getLastestData,
 			getRangeData: getRangeData,
@@ -363,9 +440,10 @@ function getSiteResource(site){
 	
 
 	switch(siteGroup){
+		case 'epa': 	resource = epa(); 	break;
 		case 'lass': 	resource = lass(); 		break;
 		case 'airbox_asus': 	resource = airbox_asus(); 	break;
-		case 'epa': 	resource = epa(); 	break;
+		case 'airbox_edimax': 	resource = airbox_edimax(); 	break;
 		
 		case 'probecube':
 		case 'miaoski':	
