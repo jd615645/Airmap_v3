@@ -47,9 +47,9 @@ module.exports = {
 		},
 		table: function(title, head, body){
 			var headHtml = '<tr><th>' + head.join('</th><th>') + '</th></tr>';
-
+			
 			var bodyHtml = '';
-			for(index in body){
+			for(var index in body){
 				var value = body[index];
 				bodyHtml += [
 					'<tr><td>',
