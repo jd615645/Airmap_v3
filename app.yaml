@@ -33,7 +33,8 @@ handlers:
   script: script/sinicaHistory.php
 - url: /json/asusAirbox\.json.*
   script: script/asusAirbox.php
-
+- url: /json/edimaxAirboxHistory\.json.*
+  script: script/edimaxAirboxHistory.php
 
 #scripts
 - url: /script/(.*)
