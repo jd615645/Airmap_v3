@@ -1,5 +1,6 @@
 var jqXHR = null;
 function getSiteResource(site){
+	var isHttps = location.protocol == "https:";
 	if( !site ){ return null; }
 	
 	var ajaxRequest = function(url, param){
@@ -42,8 +43,9 @@ function getSiteResource(site){
 			});
 		};
 		var getRangeData = function(range, cb){
-			// var url = "http://nrl.iis.sinica.edu.tw/LASS/history.php";
-			var url = "/json/sinicaHistory.json";
+			var url = "http://nrl.iis.sinica.edu.tw/LASS/history.php";
+			if(isHttps){ url = "/json/sinicaHistory.json"; }
+
 			var param = {
 				device_id: deviceID,
 				start: moment().utc().add(-1, range).format().replace('+00:00', 'Z'),
@@ -265,7 +267,7 @@ function getSiteResource(site){
 	};
 
 	var epa = function(){
-		var apiUrl = "http://taqm.g0v.asper.tw/site-:id-lastest.json".replace(':id', deviceID);
+		var apiUrl = "https://taqm.g0v.asper.tw/site-:id-lastest.json".replace(':id', deviceID);
 		var deviceID = site.getProperty('Channel_id');
 		var momentFormat = "YYYY-MM-DD HH:mm:ss";
 		var fieldMapping = {};
@@ -284,7 +286,7 @@ function getSiteResource(site){
 			});
 		};
 		var getRangeData = function(range){
-			var url = "http://taqm.g0v.asper.tw/site-:id.json".replace(':id', deviceID);
+			var url = "https://taqm.g0v.asper.tw/site-:id.json".replace(':id', deviceID);
 
 			return ajaxRequest(url).then(function(data){				
 				var feeds = [];
