@@ -56,7 +56,27 @@ var siteTool = (function(){
 		return titles;
 	}
 
+	var calcSitesInView = function(){
+		var sitesCountInView = 0;
+		var Bounds = MapHandler.getInstance().getBounds();
+		for(var i in sites){
+			var site = sites[i];
+			if( Bounds.contains(site.getPosition()) ){
+				sitesCountInView++;
+			}
+		}
+		$("#info-on-map .text").text(sitesCountInView);
+	}
+
+	var boot = function(){
+		//bind events
+		MapHandler.addListener('bounds_changed', function(){
+			calcSitesInView();
+		});
+	}	
+
 	return {
+		boot: boot,
 		add: add,
 		clear: clear,
 		getGroups: getGroups,
@@ -127,7 +147,8 @@ var siteTool = (function(){
 				$("body").trigger("makerLoadCompelete");
 			}
 			
-			$("body").trigger("sitesLoaded", [getGroups()])
+			$("body").trigger("sitesLoaded", [getGroups()]);
+			calcSitesInView();
 		},
 		toggleLayer: toggleLayer,
 		getVoronoiData: function(){

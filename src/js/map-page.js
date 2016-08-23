@@ -16,6 +16,7 @@ Indicator.boot();
 $("body")
 	.on('mapBootCompelete', function(){
 		DataSource.boot();
+		siteTool.boot();
 		require("js/map-infowindow-layer");
 	})
 	.on("dataSourceLoadCompelete", function(e, source, data){

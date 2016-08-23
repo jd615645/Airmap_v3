@@ -123,3 +123,34 @@ html, body{
 #footer > p { text-align: center; }
 #footer .datasource a {margin: 0 3px;}
 #footer .datasource img {max-height: 40px;}
+
+#info-on-map{
+	position: absolute;
+	bottom: 55px;
+	right: 50px;
+	width: 80px;
+	height: 50px;
+	overflow:hidden;
+	border-radius: 5px;
+	opacity: .6;
+}
+	#info-on-map .bg{
+		position: absolute;
+		top: 0; left: 0;
+		background: #fff;
+		opacity: .4;
+		width: 100%;
+		height: 100%;
+	}
+	#info-on-map .content{
+		color: #fff;
+		padding:5px;
+	}
+		#info-on-map .content .head{
+			text-align: center;
+			font-size: .8em;
+		}
+		#info-on-map .content .text{
+			text-align: center;
+			font-size: 1.4em;
+		}
