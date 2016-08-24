@@ -22,4 +22,12 @@ $(function(){
 			$(".bootstrap-table .search input").val(siteName).trigger('keyup');
 		}
 	});
+
+	$(".bsTable").on('click-row.bs.table', function(e, row, $tr){
+		if ($tr.next().is('tr.detail-view')) {
+			$(this).bootstrapTable('collapseRow', $tr.data('index'));
+		} else {
+			$(this).bootstrapTable('expandRow', $tr.data('index'));
+		}
+	});
 });
