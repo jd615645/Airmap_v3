@@ -6,8 +6,13 @@ module.exports = {
 		location: function(value, row, index){
 			// var url = "https://www.google.com.tw/maps/place/" + value.lat + ',' + value.lng;
 			var url = "/@" + value.lat + ',' + value.lng;
-			var text = [value.lat, value.lng].join(', ');
-			return "<a href='" + url + "' target='_blank' title='" + text + "'><span class='glyphicon glyphicon-map-marker'></span></a>";
+			var latlng = [value.lat, value.lng].join(', ');			
+
+			return [
+				`<a href="${url}" class="latlng" target="_blank" data-latlng="${latlng}">`,
+				'<span class="glyphicon glyphicon-map-marker"></span>',
+				'</a>'
+			].join('');
 		},
 		detail: function(index, row, element){
 			return [
