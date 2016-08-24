@@ -72,7 +72,7 @@ function filterCreateAt($timeStr){
 	if( !strlen($timeStr) ){ return false; }
 
 	$time = strtotime($timeStr);
-	$gap = 60 * 60; //60mins
+	$gap = 30 * 60; //30mins
 
 	return (bool)( (time() - $time) <= $gap );
 }
