@@ -7,7 +7,7 @@ module.exports = {
 			// var url = "https://www.google.com.tw/maps/place/" + value.lat + ',' + value.lng;
 			var url = "/@" + value.lat + ',' + value.lng;
 			var text = [value.lat, value.lng].join(', ');
-			return "<a href='" + url + "' target='_blank'>" + text + "</a>";
+			return "<a href='" + url + "' target='_blank' title='" + text + "'><span class='glyphicon glyphicon-map-marker'></span></a>";
 		},
 		detail: function(index, row, element){
 			return [
@@ -22,12 +22,12 @@ module.exports = {
 		updateTime: function(time){
 			var human = moment(time).fromNow();
 			var dataTime = moment(time).format('YYYY-MM-DD HH:mm');
-			return human + ' (' + dataTime + ')';
+			return '<span title="' + dataTime + '">' + human + ' <span class="glyphicon glyphicon-time"></span></span>';
 		},
-		siteName: function(name){
-			var url = "/site#" + name;
+		siteName: function(name, row){
+			var url = "/site#" + row.SiteGroup + '-' + name;
 			return "<a href='" + url + "' target='_blank'>" + name + "</a>";
-		}
+		},
 	},
 	generate: {
 		siteOptions: function(data){
@@ -51,6 +51,7 @@ module.exports = {
 			var bodyHtml = '';
 			for(var index in body){
 				var value = body[index];
+				console.log(index, value);
 				bodyHtml += [
 					'<tr><td>',
 					index,
