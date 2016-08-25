@@ -38,8 +38,17 @@ $(function(){
 		var getAddr = function(lat, lng, cb){
 			var coord = new google.maps.LatLng(lat, lng);
 			geocoder.geocode({'latLng': coord }, function(results, status) {
-				if (status === google.maps.GeocoderStatus.OK && results) {					
-					cb(results[0].formatted_address);
+				if (status === google.maps.GeocoderStatus.OK && results) {	
+					var address = results[0].formatted_address;
+
+					var components = results[0].address_components;
+					if( components.length > 4 ){						
+						components.shift(); components.pop();
+						var seperate = components[components.length-1].short_name == "TW" ? '' : ', ';
+						address = components.reverse().map((component) => component.long_name).join(seperate);						
+					}
+
+					cb(address);
 					return;
 				}
 				cb('');
