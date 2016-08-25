@@ -84,6 +84,7 @@ var Indicator = {
 		}
 
 		this.generateLevelBar();
+		$("body").trigger("indicatorBoot");
 	},
 	getPresentType: function(){
 		return this.presentType;
