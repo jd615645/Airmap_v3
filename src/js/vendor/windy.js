@@ -357,7 +357,7 @@ var Windy = function( params ){
 
     function windIntensityColorScale(step, maxWind) {
 
-        result = [
+        var result = [
           /* blue to red*/
           // "rgba(" + hexToR('#178be7') + ", " + hexToG('#178be7') + ", " + hexToB('#178be7') + ", " + 0.5 + ")",
           // "rgba(" + hexToR('#8888bd') + ", " + hexToG('#8888bd') + ", " + hexToB('#8888bd') + ", " + 0.5 + ")",
@@ -382,7 +382,8 @@ var Windy = function( params ){
           "rgba(" + hexToR('#ff1edb') + ", " + hexToG('#ff1edb') + ", " + hexToB('#ff1edb') + ", " + 0.5 + ")"
         ];
 
-        var colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#B12802'];
+        // var colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#B12802'];
+        var colors = ['#75D2FF', '#69FCF0', '#5EF9AD', '#54F763', '#7FF449', '#C0F13F', '#EFD635', '#EC832B', '#E92B21', '#E71863'];
 
         var toRGBA = function(hex, opacity){
         	opacity = opacity || 0.5;

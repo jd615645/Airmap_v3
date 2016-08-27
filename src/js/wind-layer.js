@@ -14,7 +14,6 @@ var WindLayer = {
 		map: MapHandler.getInstance(),
 	},
 	property: {
-		// ctrlContainer: "#windLayerCtrl",
 		fillOpacity: 0.6,
 		moveSpeed: 1,
 		windyData: {},
