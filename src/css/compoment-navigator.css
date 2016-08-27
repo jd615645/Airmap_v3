@@ -24,7 +24,7 @@
 		.list-group-item { padding-top: 0; padding-bottom: 0; border-left: 0; border-right: 0;}
 		.list-group-item .bootstrap-switch{ float:right; }
 		
-		.list-group-item-heading{ margin-bottom:0; padding: 10px; }
+		.list-group-item-heading{ margin-bottom:0; padding: 10px; cursor: pointer; }
 
 		.list-group-item-text { margin-top: 10px; }		
 			.blockquote{ border-left: 5px solid #eee; padding: 0px 10px 0px 10px; margin-bottom:10px;}
