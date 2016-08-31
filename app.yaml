@@ -71,3 +71,4 @@ skip_files:
 - ^(node_modules/.*)
 - ^(.git/.*)
 - ^(src/.*)
+- \.map$

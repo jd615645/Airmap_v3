@@ -1,267 +1,27 @@
-var echarts = require("echarts");
-
 var GaugeChart = {
+	googleLoaded: false,
 	gauges: [],
 	options: {
 		XL: {
-		    series : [
-		        {
-		            type: 'gauge',
-		            z: 3,
-		            min: 0,
-		            max: 100,
-		            splitNumber: 10,
-		            radius: '90%',
-		            axisLine: {
-		                lineStyle: { 
-		                    width: 40,
-		                    color: [],
-    					},
-		            },
-		            axisTick: {
-		                length: 40,
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            axisLabel: {
-		            	show: true,
-		            	textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 13,
-		                }
-		            },
-		            splitLine: {   
-		                length: 50, 
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            pointer: {
-		                length: '90%',
-		                width:10,
-		            },
-		            itemStyle: {
-		            	normal: {
-		            		shadowColor: 'rgba(0, 0, 0, 0.5)',
-    						shadowBlur: 2,
-    						shadowOffsetY: 3
-		            	}
-		            },
-		            title : {
-		            	offsetCenter: ['0%', '70%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 30,
-		                    fontFamily: 'Noto Sans TC',
-		            		color: '#FFF'
-		                }
-		            },
-		            detail : {
-		            	offsetCenter: ['0%', '30%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 30,
-		                    fontFamily: 'Noto Sans TC',
-		                    color: '#fff',
-		                }
-		            },
-		            data:[{name: '', value: 0}]
-		        },
-		    ]
+		   width: 320,
+		    height: 320,
 		},
 		L: {
-		    series : [
-		        {
-		            type: 'gauge',
-		            z: 3,
-		            min: 0,
-		            max: 100,
-		            splitNumber: 10,
-		            radius: '90%',
-		            axisLine: {
-		                lineStyle: { 
-		                    width: 25,
-		                    color: [],
-    					},
-		            },
-		            axisTick: {
-		                length: 25,
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            axisLabel: {
-		            	show: false,		            	
-		            },
-		            splitLine: {   
-		                length: 30, 
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            pointer: {
-		                length: '80%',
-		                width:8,
-		            },
-		            itemStyle: {
-		            	normal: {
-		            		shadowColor: 'rgba(0, 0, 0, 0.5)',
-    						shadowBlur: 2,
-    						shadowOffsetY: 3
-		            	}
-		            },
-		            title : {
-		            	offsetCenter: ['0%', '70%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 20,		                    
-		            		fontFamily: 'Noto Sans TC',
-		            		color: '#FFF'
-		                }
-		            },
-		            detail : {
-		            	offsetCenter: ['0%', '30%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 20,
-		                    fontFamily: 'Noto Sans TC',
-		                    color: '#fff',
-		                }
-		            },
-		            data:[{name: '', value: 0}]
-		        },
-		    ]
+		    width: 220,
+		    height: 220,
 		},
 		M: {
-		    series : [
-		        {
-		            type: 'gauge',
-		            z: 3,
-		            min: 0,
-		            max: 100,
-		            splitNumber: 10,
-		            radius: '90%',
-		            axisLine: {
-		                lineStyle: { 
-		                    width: 30,
-		                    color: [],
-		                }
-		            },
-		            axisTick: {
-		                length: 20,
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            axisLabel: {
-		            	show: false,
-		            },
-		            splitLine: {   
-		                length: 20, 
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            pointer: {
-		                length: '90%',
-		                width:8,
-		            },
-		            itemStyle: {
-		            	normal: {
-		            		shadowColor: 'rgba(0, 0, 0, 0.5)',
-    						shadowBlur: 2,
-    						shadowOffsetY: 3
-		            	}
-		            },
-		            title : {
-		            	offsetCenter: ['0%', '70%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 20,
-		                    fontFamily: 'Noto Sans TC',                    
-		            		color: '#FFF'
-		                }
-		            },
-		            detail : {
-		            	offsetCenter: ['0%', '30%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 20,
-		                    fontFamily: 'Noto Sans TC',
-		                    color: '#fff',	
-		                }
-		            },
-		            data:[{name: 'PM 2.5', value: 0}]
-		        },
-		    ]
+		    width: 180,
+		    height: 180,
 		},
 		S: {
-		    series : [
-		        {
-		            type: 'gauge',
-		            z: 3,
-		            min: 0,
-		            max: 100,
-		            splitNumber: 10,
-		            radius: '90%',
-		            axisLine: {
-		                lineStyle: { 
-		                    width: 15,
-		                    color: [],
-    					},
-		            },
-		            axisTick: {
-		                length: 15,
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            axisLabel: {
-		            	show: false,
-		            },
-		            splitLine: {   
-		                length: 15, 
-		                lineStyle: {
-		                    color: 'auto'
-		                }
-		            },
-		            pointer: {
-		                length: '60%',
-		                width:3,
-		            },
-		            itemStyle: {
-		            	normal: {
-		            		shadowColor: 'rgba(0, 0, 0, 0.5)',
-    						shadowBlur: 2,
-    						shadowOffsetY: 3
-		            	}
-		            },
-		            title : {
-		            	offsetCenter: ['0%', '70%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 13,
-		                    fontFamily: 'Noto Sans TC',	                    
-		            		color: '#FFF'
-		                }
-		            },
-		            detail : {
-		            	offsetCenter: ['0%', '30%'],
-		                textStyle: {
-		                    fontWeight: 'bolder',
-		                    fontSize: 13,
-		                    fontFamily: 'Noto Sans TC',
-		                    color: '#fff',
-		                }
-		            },
-		            data:[{name: '', value: 0}]
-		        },
-		    ]
+		    width: 90,
+		    height: 90,
 		}
 	},
 	init: function(userOptions){
 		if( !userOptions['site'] || !userOptions['element'] || !userOptions['measureType'] ){ return false; }
+		
 		var gauge = {
 			site: userOptions['site'],
 			element: userOptions['element'],
@@ -273,67 +33,55 @@ var GaugeChart = {
 			timer: null
 		}
 
-		gauge.instance = echarts.init( $(gauge.element)[0] );
-		// gauge.timer = setInterval(function(){	//TODO: fetch site data (CORS)
-		// 	this.updateValue(gauge);
-		// }.bind(this), 5 * 1000);
-
-		this.setGargeAxisColor(gauge.size, gauge.measureType);
-		this.setFontStyle(gauge);
-		this.updateValue(gauge, true);
-
 		this.gauges.push(gauge);
-	},
-	setValue: function(gauge, value){
-		if(typeof value == "number"){
-			this.options[gauge.size]['series'][0]['data'][0] = {name: gauge.title, value: value};			
-			gauge.instance.setOption(this.options[gauge.size]);
-		}else{
-			$(gauge.element).html("<div class='msg'>" + gauge.measureType + ' not valid! </div>')
-		}
-	},
-	updateValue: function(gauge, useCache){
-		var value = null;
-		if(useCache){
-			value = gauge.site.getMeasure(gauge.measureType);
-			this.setValue(gauge, value);
-		}else{
-			//TODO: fetch site data (CORS)
-			// gauge.site.getResource().getLastestData(function(data){
-			// 	this.setValue(gauge, value);
-			// }.bind(this));
-		}
-	},
-	setFontStyle: function(gauge){
-		if( gauge.fontStyle.fontSize ){
-			this.options[gauge.size]['series'][0]['title']['textStyle']['fontSize'] = +gauge.fontStyle.fontSize;
-			this.options[gauge.size]['series'][0]['detail']['textStyle']['fontSize'] = +gauge.fontStyle.fontSize;
-		}
-		if( gauge.fontStyle.color ){
-			this.options[gauge.size]['series'][0]['title']['textStyle']['color'] = gauge.fontStyle.color;
-			this.options[gauge.size]['series'][0]['detail']['textStyle']['color'] = gauge.fontStyle.color;
-		}
-		if( gauge.fontStyle.fontWeight ){
-			this.options[gauge.size]['series'][0]['title']['textStyle']['fontWeight'] = gauge.fontStyle.fontWeight;
-			this.options[gauge.size]['series'][0]['detail']['textStyle']['fontWeight'] = gauge.fontStyle.fontWeight;
-		}
-	},
-	setGargeAxisColor: function(chartSize, measureType){
-		var Indicator = require("js/measure-indicator");
-		var levels = Indicator.getLevels(measureType);
-		if(!levels){ return; }
-		
-		var colorLevels = [];
-		var maxValue = Object.keys(levels).pop();
-		for(var levelValue in levels){
-			colorLevels.push([levelValue/maxValue, levels[levelValue]]);
+
+		if( !this.googleLoaded ){
+			// google.charts.load('current', {'packages':['gauge']});
+			this.googleLoaded = true;
 		}
 
-		this.options[chartSize]['series'][0]['max'] = maxValue;
-		this.options[chartSize]['series'][0]['axisLine']['lineStyle']['color'] = colorLevels;
+      	google.charts.setOnLoadCallback(() => {
+      		this.draw(gauge);
+      	});
+	},
+	draw: function(gauge){
+		var data = this.getData(gauge);
+		if( data === false){ return false; }
+
+		var options = Object.assign({}, this.options[gauge.size], this.getColorOptions(gauge));
+
+		gauge.instance = new google.visualization.Gauge($(gauge.element)[0]);
+		gauge.instance.draw(data, options);
+	},
+	getData: function(gauge){
+		var value = gauge.site.getMeasure(gauge.measureType);
+		if(typeof value == "number"){
+			var dataTable = new google.visualization.DataTable();
+			dataTable.addColumn('string', 'Label');
+		    dataTable.addColumn('number', 'Value');
+		    dataTable.addRows([
+		    	[gauge.title, value]
+		    ]);
+			return dataTable;
+		}else{
+			$(gauge.element).html("<div class='msg'>" + gauge.measureType + ' not valid! </div>');
+			return false;
+		}		
+	},
+	getColorOptions: function(gauge){
+		if( gauge.measureType == "PM2.5"){
+			return {redFrom: 53, redTo: 100, yellowFrom:35, yellowTo: 53, greenFrom:0, greenTo:35};
+		}
+		if( gauge.measureType == "Temperature"){
+			return {redFrom: 30, redTo: 40, yellowFrom:26, yellowTo: 30, greenFrom:0, greenTo:26, max: 40};
+		}
+		if( gauge.measureType == "Humidity"){
+			return {redFrom: 80, redTo: 100, yellowFrom:60, yellowTo: 80, greenFrom:0, greenTo:60};
+		}
 	},
 	clear: function(){
 		this.gauges.map(function(gauge, i){
+			gauge.instance.clearChart();
 			clearInterval(gauge.timer);
 			delete this.gauges[i];
 		}.bind(this))

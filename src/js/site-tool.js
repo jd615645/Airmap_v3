@@ -91,7 +91,7 @@ var siteTool = (function(){
 		loadSites: function(data){
 			if(!data || !data.length){ return false; }
 			
-			var usingAnimation = false;
+			var usingAnimation = true;
 			var delayms = 30;
 			var validSiteCount = 0;
 

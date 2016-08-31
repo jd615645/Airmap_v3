@@ -399,7 +399,9 @@ function getSiteResource(site){
 
 			feeds.map(function(feed){
 				var type = indexMapping[feed['type']];
-				measures[type] = feed['values'];
+				measures[type] = feed['values'].map( value => {
+					return isNaN(value) ? 0 : value;
+				})
 			});
 
 			return {

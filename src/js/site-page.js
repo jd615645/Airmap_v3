@@ -42,7 +42,7 @@ function initGarge(){
 
 	var pm25 = {
 		element: "#gauge-pm25",
-		size: 'L',
+		size: 'M',
 		title: 'PM 2.5',
 		measureType: 'PM2.5',
 		site: Site,
@@ -55,7 +55,7 @@ function initGarge(){
 
 	var temp = {
 		element: "#gauge-temp",
-		size: 'L',
+		size: 'M',
 		title: 'Temp',
 		measureType: 'Temperature',
 		site: Site,
@@ -67,7 +67,7 @@ function initGarge(){
 
 	var humi = {
 		element: "#gauge-humi",
-		size: 'L',
+		size: 'M',
 		title: 'RH',
 		measureType: 'Humidity',
 		site: Site,
@@ -91,7 +91,6 @@ function initChartControl(){
 		var resource = Site.getResource();
 		var method = 'get' + range + 'Data';
 		if( resource && resource[method] ){
-			SiteHistoryChart.clear();
 			$("#history-chart .loading").show();
 			
 			var deffered = resource[method]();

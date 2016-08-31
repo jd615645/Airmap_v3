@@ -241,7 +241,7 @@
 							</div>
 							
 							<div v-show="!site.chartLoadingError">
-								<canvas id="site-history-chart" width="350" height="200"></canvas>
+								<div id="site-history-chart" height="300"></div>
 							</div>
 
 							<div class="site-history-error" v-show="site.chartLoadingError">{{site.chartLoadingError}}</div>
@@ -309,7 +309,9 @@
 			</div>
 		</div>
 
-		<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBfhb3bOt_jBPFN2WDzkhX8k518Yc7CLBw"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfhb3bOt_jBPFN2WDzkhX8k518Yc7CLBw"></script>
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>google.charts.load('current', {'packages':['gauge', 'corechart']});</script>
 		<script src="js/vendor-common.js"></script>
 		<script src="js/vendor-map.js"></script>
 		<script src="js/map.js"></script>
