@@ -209,11 +209,10 @@ var loadSiteHistoryChart = function(){
 
 	if( resource && resource[method] ){
 		var SiteHistoryChart = require("js/site-history-chart");
-		SiteHistoryChart.clear();
 		Navigator.site.chartLoading = true;
 		
 		var deffered = resource[method]();
-		deffered.then(function(data){
+		deffered.then(function(data){			
 			var chartData = resource.getChartData(data.feeds);
 			SiteHistoryChart.start(chartData);
 

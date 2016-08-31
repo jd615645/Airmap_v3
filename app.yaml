@@ -1,5 +1,5 @@
 application: taiwan-airmap
-version: 3-1
+version: 3-2
 runtime: php55
 api_version: 1
 threadsafe: yes
@@ -71,3 +71,4 @@ skip_files:
 - ^(node_modules/.*)
 - ^(.git/.*)
 - ^(src/.*)
+- \.map$

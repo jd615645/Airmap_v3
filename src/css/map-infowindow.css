@@ -50,12 +50,22 @@
 			width: 180px; 
 			float:left; 
 			height:180px; 
-			margin-top: 10px;
 
 			display: flex;
 			align-items: center;
 			justify-content: center;
 		}
+
+		#iw-container .main-garge svg g text {
+			font-size: 14px;
+			font-family: 'Noto Sans TC', sans-serif;
+		}
+		
+		#iw-container .main-garge svg g g text {
+			font-size: 20px;
+			font-family: 'Noto Sans TC', sans-serif;
+		}
+
 		#iw-container .sub-garge{ 
 			width: 90px; 
 			float:right; 
@@ -67,8 +77,14 @@
 			align-items: center;
 			justify-content: center;
 		}
-		#iw-container .sub-garge-top{ 
-			margin-bottom: 5px; 
+		#iw-container .sub-garge svg g text[text-anchor="middle"] { /*title*/
+			font-size: 12px;
+			font-family: 'Noto Sans TC', sans-serif;
+		}
+		
+		#iw-container .sub-garge svg g g text {	/*value*/
+			font-size: 12px;
+			font-family: 'Noto Sans TC', sans-serif;
 		}
 
 		#iw-container .msg{
@@ -83,13 +99,13 @@
 		#iw-container .iw-link{
 			position: absolute;
 			top: 0; right: 0;
-			padding: 5px;
+			padding: 2px;
 		}
 		#iw-container .iw-link a{
 			cursor: pointer;
 			margin: 0 3px;
+			padding: 3px 3px 0 3px
 		}
 		#iw-container .iw-link .glyphicon{
-			font-size: 1.6em;
-			margin-left: 2px;
+			font-size: 1.3em;
 		}

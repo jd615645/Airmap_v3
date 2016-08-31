@@ -15,7 +15,7 @@ module.exports = {
 		"vendor-common": ["jquery",  "moment"],
 		"vendor-map": [
 			"vue", "bootstrap-switch", "bootstrap-slider", 
-			"js.cookie", "d3", "chart.js", "echarts"
+			"js.cookie", "d3"
 		],
 	},
 	output: {

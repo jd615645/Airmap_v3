@@ -1,8 +1,4 @@
-var Chart = require("chart.js");
-
 var SiteHistoryChart = {
-	booted: false,
-	ctx: null,
 	instance: null,
 	elementID: "site-history-chart",
 	lineColors: ['#F4A460', '#FF1493', '#20B2AA', '#ADFF2F', '#B0C4DE'],
@@ -35,53 +31,49 @@ var SiteHistoryChart = {
 				},
 			}],
 		},	
+	},	
+	start: function(data, options){
+		google.charts.setOnLoadCallback(() => {
+      		this.draw(data, options);
+      	});
+
+      	$(window).resize(() => {
+			this.draw(data, options);
+      	});
 	},
-	boot: function(){
-		if( this.booted ){ return ; }
-
-		this.chartGlobalOption();
-
-		this.ctx = document.getElementById(this.elementID).getContext("2d");             
-
-		this.booted = true;
-	},
-	chartGlobalOption: function(){
-		Chart.defaults.global.defaultColor = 'rgba(105,105,105,0.1)',
-		Chart.defaults.global.defaultFontColor = '#8E9090';
-		Chart.defaults.global.defaultFontSize = 10;
-
-		Chart.defaults.global.tooltips.mode = 'label';
-		Chart.defaults.global.tooltips.backgroundColor = 'rgba(33,33,33,0.8)';
-		Chart.defaults.global.tooltips.titleFontSize = 14;
-		Chart.defaults.global.tooltips.bodyFontSize = 14;
-		Chart.defaults.global.tooltips.bodySpacing = 4;
-		Chart.defaults.global.tooltips.xPadding = 8;
-		Chart.defaults.global.tooltips.yPadding = 8;
-
-		Chart.defaults.global.legend.position = 'bottom';
-		Chart.defaults.global.elements.line.fill = false;
-		Chart.defaults.global.elements.line.tension = 0;
-		Chart.defaults.global.elements.point.radius = 0;
-		Chart.defaults.global.elements.point.hitRadius = 5;
-	},
-	start: function(data, options){		
-		this.boot();
-		this.clear();
-		
-		// line random color
-		var colors = this.lineColors.slice();
-		for(var i in data.datasets){
-			data.datasets[i]['borderColor'] = colors.shift();
+	draw: function(data, options){
+		if( !this.instance ){
+			this.instance = new google.visualization.LineChart(document.getElementById(this.elementID));
 		}
 
-		this.instance = new Chart(this.ctx, {
-			type: 'line',
-			data: data,
-			options: $.extend(this.options, options)
-		});
+		var chartData = this.getData(data);
+		var chartOptions = Object.assign({
+			chartArea: { top:10, width: '80%', height: '80%'},
+			legend: { position: 'bottom'},
+			fontSize: 14,
+			fontName: 'Noto Sans TC',
+		}, options || {});
+
+		this.instance.draw(chartData, chartOptions);
 	},
 	clear: function(){
-		if( this.instance ){ this.instance.destroy(); }
+		if( this.instance ){ this.instance.clearChart(); }
+	},
+	getData: function(data){
+		var dataTable = new google.visualization.DataTable();
+		dataTable.addColumn('datetime', 'Time');
+		dataTable.addRows(data.labels.length);
+
+		data.datasets.map( (line, index) => {
+			dataTable.addColumn('number', line.label);
+			for(var i in line.data){
+				var value = line.data[i];
+				var time = moment(data.labels[i], 'MM-DD HH:mm').toDate();
+				dataTable.setCell(+i, 0, time);		
+				dataTable.setCell(+i, (index+1), value);
+			}
+		})
+		return dataTable;
 	},
 	getRandColor: function(brightness){
 		// source: http://stackoverflow.com/a/7352887

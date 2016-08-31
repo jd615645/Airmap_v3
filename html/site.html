@@ -21,7 +21,7 @@
 		<style>
 			html, body{ padding: 10px 10px; }			
 			#gauge{	text-align: center;}
-				#gauge > div { display: inline-block; width:170px; height: 170px; margin: 5px; }
+				#gauge > div { display: inline-block; width:170px; height: 180px; margin: 5px 0; }
 			#site-title{ text-align: center; font-size:1.5em; font-weight: bolder; }
 			#history-chart{ position: relative; }
 			.history-loading-error{ display: none; color: red; font-size:1.3em; text-align: center; }
@@ -62,7 +62,8 @@
 					</div>
 				</div>
 
-				<canvas id="site-history-chart" width="720" height="300"></canvas>
+				<!-- <canvas id="site-history-chart" width="720" height="300"></canvas> -->
+				<div id="site-history-chart" style="height: 400px;"></div>
 				
 				<div id="chart-control">
 					<span class="btn btn-default active" data-range="Hourly" lang="zh-tw" title="過去一小時歷史數值">
@@ -93,7 +94,9 @@
 		<div id="no-content" class="container" style='text-align: center; padding-top:40%;'>
 			<h1><a href='/'>Oops! What are you looking for?</a></h1>
 		</div>
-
+		
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>google.charts.load('current', {'packages':['gauge', 'corechart']});</script>
 		<script src="js/vendor-common.js"></script>
 		<script src="js/vendor-map.js"></script>
 		<script src="js/site.js"></script>
