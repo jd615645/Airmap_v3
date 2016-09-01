@@ -81,7 +81,7 @@ var GaugeChart = {
 	},
 	clear: function(){
 		this.gauges.map(function(gauge, i){
-			gauge.instance.clearChart();
+			if(gauge.instance){ gauge.instance.clearChart(); }
 			clearInterval(gauge.timer);
 			delete this.gauges[i];
 		}.bind(this))

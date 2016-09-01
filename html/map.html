@@ -39,7 +39,7 @@
 			</button>
 			<div class="header">
 				<div style="text-align: right">
-					<input type="checkbox" class="bs-switch" id="languageSwitch" checked="checked" data-size="mini" data-on-text="中文" data-off-text="En" data-on-Color="default" data-off-Color="default">
+					<input type="checkbox" class="bs-switch" id="languageSwitch" checked="checked" data-size="mini" data-off-text="中文" data-on-text="En" data-on-Color="default" data-off-Color="default">
 				</div>
 			</div>
 			<ul class="list-group">
@@ -52,8 +52,8 @@
 						<div class="blockquote">
 							<span class="title" data-lang="group">群組</span>
 							<div class="site-category-allswitch">
-								<button type="button" class="btn btn-xs btn-success" v-on:click="site_selectAllCategory">Select All</button>
-								<button type="button" class="btn btn-xs btn-defalut" v-on:click="site_deselectAllCategory">Deselect All</button>
+								<button type="button" class="btn btn-xs btn-success" v-on:click="site_selectAllCategory" data-lang="selectAll">Select All</button>
+								<button type="button" class="btn btn-xs btn-defalut" v-on:click="site_deselectAllCategory" data-lang="selectNone">Deselect All</button>
 							</div>
 						</div>
 						<div class="blockquote-content category">

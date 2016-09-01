@@ -42,7 +42,7 @@ InfoWindowLayer.prototype.onAdd = function() {
 					'<a class="line-chart btn btn-xs btn-primary" title=":historyChart">',
 						'<span class="glyphicon glyphicon-stats"></span>',
 					'</a>',
-					'<a href="" class="indep-page btn btn-xs btn-primary" title=":independentPage">',
+					'<a href="" target="_blank" class="indep-page btn btn-xs btn-primary" title=":independentPage">',
 						'<span class="glyphicon glyphicon-bookmark"></span>',
 					'</a>',
 				'</div>',
@@ -70,18 +70,29 @@ InfoWindowLayer.prototype.onAdd = function() {
 		}
 	});
 
-	$body.on("click", '.iw-link a', function(e){
-		if( $(this).hasClass("line-chart") ){
-			$("body").trigger("openNavigator", ['siteChart']);
-		}
-
-		e.stopPropagation();
-	});
-
 	// Add the element to the "overlayLayer" pane.
 	var panes = this.getPanes();
 	panes.overlayMouseTarget.style.zIndex = 200;
 	panes.overlayMouseTarget.appendChild(this.div);
+
+	function cancelEvent(e) {
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	} 
+	
+	google.maps.event.addDomListener(document.querySelector('.iw-link a'), 'click', function(e){
+		var $el =  $(e.target);		
+		var isA = $el.is('a') && $el.hasClass("line-chart");
+		var parentIsA = $el.parents('a').length && $el.parents('a').hasClass("line-chart");		
+		if( isA || parentIsA ){ 
+			$body.trigger("openNavigator", ['siteChart']);
+		}
+		cancelEvent(e);
+	});
+	google.maps.event.addDomListener(this.div, 'mousedown', cancelEvent); //cancels drag/click
+	google.maps.event.addDomListener(this.div, 'click', cancelEvent);       //cancels click
+	google.maps.event.addDomListener(this.div, 'dblclick', cancelEvent);    //cancels double click
+	google.maps.event.addDomListener(this.div, 'contextmenu', cancelEvent);  //cancels double right click 
 };
 InfoWindowLayer.prototype.draw = function() {
 	if(!this.position){ return false; }

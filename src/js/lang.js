@@ -11,6 +11,9 @@ var LANG = {
 			"display": "Display",
 			"opacity": "Opacity",
 
+			"selectAll": "Select All",
+			"selectNone": "DeSelect All",
+
 			"siteFilter": "Site Filter",
 			"siteList": "Sites List",
 			"siteChart": "Site Chart",			
@@ -50,6 +53,9 @@ var LANG = {
 			"group": "群組",
 			"display": "顯示",
 			"opacity": "透明度",
+
+			"selectAll": "全選",
+			"selectNone": "全不選",
 
 			"siteFilter": "測站篩選",
 			"siteList": "站點清單",
