@@ -100,10 +100,19 @@ function initChartControl(){
 
 				$("#history-chart .loading").hide();
 			})
-			.catch(function(jqXHR){
-				// console.log('error'); console.dir(jqXHR);
+			.catch(function(err){
+				// console.log(err); console.dir(err);
 
-				var errorText = 'Load History Error: ' + jqXHR.status + ' ' + jqXHR.statusText;
+				var error = '';
+				if( typeof err === 'object' ){	//object
+					if(err.message){ error = err.message; }	//exception
+					if(err.statusText){ error = 'ajax request error msg is ' + err.statusText; }	//jqXHR
+				}
+				if( typeof err === 'string' ){
+					error = err;
+				}
+
+				var errorText = 'Load History Error: ' + error;
 				$(".history-loading-error").text(errorText).show();
 				$("#history-chart").hide();
 				$("#history-chart .loading").hide();

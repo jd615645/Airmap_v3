@@ -86,6 +86,7 @@ InfoWindowLayer.prototype.onAdd = function() {
 		var parentIsA = $el.parents('a').length && $el.parents('a').hasClass("line-chart");		
 		if( isA || parentIsA ){ 
 			$body.trigger("openNavigator", ['siteChart']);
+			$body.trigger("showHistoryChart", [self.Site]);
 		}
 		cancelEvent(e);
 	});

@@ -220,15 +220,25 @@ var loadSiteHistoryChart = function(){
 			Navigator.site.chartLoadingError = false;
 			Navigator.site.chartLoading = false;
 		})
-		.catch(function(jqXHR){
-			// console.log('error'); console.dir(jqXHR);
+		.catch(function(err){
+			// console.log('err'); console.dir(err);
+			var error = '';
+			if( typeof err === 'object' ){	//object
+				if(err.message){ error = err.message; }	//exception
+				if(err.statusText){ error = 'ajax request error msg is ' + err.statusText; }	//jqXHR
+			}
+			if( typeof err === 'string' ){
+				error = err;
+			}
 
-			Navigator.site.chartLoadingError = 'Load History Error: ' + jqXHR.status + ' ' + jqXHR.statusText;
+			var errorText = 'Load History Error: ' + error;
+
+			Navigator.site.chartLoadingError = errorText;
 			Navigator.site.chartLoading = false;
 		});
 	}
 }
-$body.on('infoWindowReady', function(e, Site){
+$body.on('showHistoryChart', function(e, Site){
 	Navigator.site.instance = Site;
 
 	Navigator.site.title = Site.getTitle();
