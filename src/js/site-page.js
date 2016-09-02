@@ -6,13 +6,13 @@ if(siteIdentity){
 	siteIdentity = decodeURIComponent(siteIdentity).split(/-(.+)?/);
 	var siteGroup = siteIdentity[0];
 	var siteName = siteIdentity[1];
-
-	$("#content").fadeIn();
-	$("#no-content").hide();
-	$("#siteGroup").text('[' + siteGroup + ']');
-	$("#siteName").text(siteName);
 	
 	findSite(siteGroup, siteName, function(site){
+		$("#content").fadeIn();
+		$("#no-content").hide();
+		$("#siteGroup").text('[' + siteGroup + ']');
+		$("#siteName").text(siteName);
+	
 		Site = site;
 		initGarge();
 		initChartControl();
