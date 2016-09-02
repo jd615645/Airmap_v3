@@ -163,16 +163,13 @@ $body.on("sitesLoaded", function(e, groups){
 });
 
 //load measure type
-$body.on("indicatorBoot", function(e){
-	var types = Indicator.getTypes();
-	var activeType = Indicator.getPresentType();
-	var measures = [];
-
-	types.map(function(type){
-		measures.push({name: type, active: activeType == type});
-	})
-	Navigator.site.measure = measures;
-});
+var types = Indicator.getTypes();
+var activeType = Indicator.getPresentType();
+var measures = [];
+types.map(function(type){
+	measures.push({name: type, active: activeType == type});
+})
+Navigator.site.measure = measures;
 
 //click outside to close navigator
 $body.click(function(e){
