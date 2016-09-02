@@ -115,8 +115,7 @@ var siteTool = (function(){
 				var mcOptions = {gridSize: 70, maxZoom: 15, minimumClusterSize: 5};
 	        	markerCluster = new MarkerClusterer(MapHandler.getInstance(), markers, mcOptions);				
 			}
-
-			$("body").trigger("makerLoadCompelete");			
+			
 			$("body").trigger("sitesLoaded", [getGroups()]);
 			calcSitesInView();
 		},
