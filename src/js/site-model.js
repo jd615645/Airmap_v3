@@ -140,11 +140,10 @@ Site.prototype.getIconImage = function(){
 		if(color == "transparent"){ color = ''; }
 	}
 	var url = [
-		"/image/markerIcon?",
-		"color=" + color.replace('#', ''),
-		"number=" + text
-	].join('&');
-	
+		"/image/markerIcon/",
+		color.replace('#', ''),
+		// "/" + text
+	].join('');
 	return {
 		url: url,
 		scaledSize: MapHandler.createSize(30, 30),

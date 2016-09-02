@@ -39,7 +39,7 @@ handlers:
 #scripts
 - url: /script/(.*)
   script: script/\1
-- url: /image/markerIcon
+- url: /image/markerIcon/.*
   script: script/markerIcon.php
 
 #static html

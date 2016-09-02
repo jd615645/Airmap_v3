@@ -1,10 +1,13 @@
 <?php
+$param = parseParam();
+
+
 $imgPadding = 2;
 $borderWidth = 5;
 $borderColor = "#FFFFFF";
-$circleRadius = isset($_GET['size']) ? intval($_GET['size']) : 50;
-$fillColor = isset($_GET['color']) ? $_GET['color'] : "";
-$number = isset($_GET['number']) && strlen($_GET['number']) ? intval($_GET['number']) : '';
+$circleRadius = strlen($param['size']) ? intval($param['size']) : 50;
+$fillColor = strlen($param['color']) ? $param['color'] : "";
+$text = strlen($param['text']) ? $param['text'] : '';
 $fontColor = getContrastYIQ($fillColor);
 $fontPath = "./consola.ttf";
 
@@ -32,14 +35,14 @@ if(strlen($fillColor)){
 //text
 // $xOffset = 0; $yOffset = 2;
 // $fontSize = 20;
-// switch(strlen($number)){
+// switch(strlen($text)){
 // 	case '1': $xOffset=$circleRadius/6-0.5; break;
 // 	case '2': break;
 // 	case '3': $xOffset=-4; $fontSize=14; break;
 // }
 // $textPosition = ($circleRadius + $imgPadding - $fontSize - 5) / 2;
 // $imgTextColor = hexColorAllocate($img, $fontColor, 1);
-// imagettftext($img, $fontSize, 0, $textPosition+$xOffset, $textPosition+$fontSize+$yOffset, $imgTextColor, $fontPath, $number);
+// imagettftext($img, $fontSize, 0, $textPosition+$xOffset, $textPosition+$fontSize+$yOffset, $imgTextColor, $fontPath, $text);
 
 //output
 header('Content-Type: image/png');
@@ -65,4 +68,18 @@ function getContrastYIQ($hexcolor){
 
 function getContrast50($hexcolor){
     return (hexdec($hexcolor) > 0xffffff/2) ? 'black':'white';
+}
+
+function parseParam(){
+	$path = $_SERVER['REQUEST_URI'];
+
+	$pattern = '/\/image\/markerIcon\//';
+	$path = preg_replace($pattern, '', $path);
+	$param = explode("/", $path);
+
+	return [
+		'color' => $param[0],
+		'size' => $param[1],
+		'text' => $param[2],
+	];
 }

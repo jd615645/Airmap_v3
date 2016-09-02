@@ -1216,11 +1216,11 @@ ClusterIcon.prototype.useStyle = function() {
 	var Indicator = require("js/measure-indicator");
 	var color = Indicator.getLevelColor(this.sums_.text);
 	var url = [
-		"/image/markerIcon?",
-		"color=" + color.replace('#', ''),
-		"number=" + this.sums_.text,
-		"size=" + (+this.width_-1)
-	].join('&');
+		"/image/markerIcon/",
+		color.replace('#', ''),
+		"/" + (+this.width_-1),
+		// "/" + this.sums_.text,
+	].join('');
 	this.url_ = url;
 };
 
