@@ -99,6 +99,30 @@ var Navigator = new Vue({
 			this.site.chartInterval = interval;
 			loadSiteHistoryChart();
 		},
+		areaQuickNavi: function(e){
+			var area = e.target.dataset.area;
+			var areaInfo = {
+				'taipei': {
+					center: MapHandler.createLatLng(25.051870291680714, 121.5127382838134),
+					zoom: 13,
+				},
+				'taichung': {
+					center: MapHandler.createLatLng(24.15600810053703, 120.6664476954345),
+					zoom: 13,
+				},
+				'chiayi': {
+					center: MapHandler.createLatLng(23.480461635135327, 120.44427495831292),
+					zoom: 14,
+				},
+				'kaohsiung': {
+					center: MapHandler.createLatLng(22.635652591485744, 120.30467134350579),
+					zoom: 13,
+				},
+			};
+			var map = MapHandler.getInstance();
+			map.setCenter( areaInfo[area].center );
+			map.setZoom( areaInfo[area].zoom );
+		}
 	},
 	computed: {
 		wind_movingSpeedText: function(){
@@ -257,4 +281,3 @@ $body.on('infoWindowClose', function(e, Site){
 	var SiteHistoryChart = require("js/site-history-chart");
 	SiteHistoryChart.clear();
 });
-
