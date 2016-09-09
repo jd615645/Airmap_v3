@@ -286,6 +286,25 @@
 					</div>
 				</li>
 
+				<li class="list-group-item" data-name="externalLink">
+					<h4 class="list-group-item-heading" v-on:click="changeActiveItem">
+						<span data-lang="">資源連結</span>
+					</h4>
+					<div class="list-group-item-text" v-show="showItemText('externalLink')" transition="slide">
+						<fieldset>
+							<legend><a href='http://nrl.iis.sinica.edu.tw/LASS/AirBox/' target='_blank'>Airbox 上線狀態</a></legend>
+							<ul>
+								<li><a href='http://nrl.iis.sinica.edu.tw/LASS/AirBox/detail.php?city=lass' target='_blank'>LASS上線狀態</a></li>
+								<li><a href='http://nrl.iis.sinica.edu.tw/LASS/AirBox/detail.php?city=taipei' target='_blank'>台北國小上線狀態</a></li>
+								<li><a href='http://nrl.iis.sinica.edu.tw/LASS/AirBox/detail.php?city=newtaipei' target='_blank'>新北國小上線狀態</a></li>
+								<li><a href='http://nrl.iis.sinica.edu.tw/LASS/AirBox/detail.php?city=taichung' target='_blank'>台中國小上線狀態</a></li>
+							</ul>
+						</fieldset>
+
+						
+					</div>
+				</li>
+
 				<li id="footer">
 					<p class="disclaimer" data-lang="disclaimer">
 						本零時空汙觀測網僅彙整公開資料提供視覺化參考，並不對資料數據提供保證，實際測值以各資料來源為準。
