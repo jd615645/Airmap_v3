@@ -68,6 +68,8 @@ var SiteHistoryChart = {
 			dataTable.addColumn('number', line.label);
 			for(var i in line.data){
 				var value = line.data[i];
+				if( isNaN(value) ){ value = 0; }
+				
 				var time = moment(data.labels[i], 'MM-DD HH:mm').toDate();
 				dataTable.setCell(+i, 0, time);		
 				dataTable.setCell(+i, (index+1), value);
